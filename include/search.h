@@ -6,3 +6,5 @@
 std::vector<int> NaiveSearch( const std::string& text, const std::string& pattern);
 
 std::vector<int> buildLPS(const std::string& pattern);
+
+std::vector<int> KMPSearch(const std::string& text, const std::string& pattern);

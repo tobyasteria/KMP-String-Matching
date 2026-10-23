@@ -21,11 +21,6 @@ std::vector<int> buildLPS(const std::string& pattern) {
     return lps;
 }
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include "search.h"
-
 std::vector<int> KMPSearch(const std::string& text, const std::string& pattern){
 
     std::vector<int> ans;
