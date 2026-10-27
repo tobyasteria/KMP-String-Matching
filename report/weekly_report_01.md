@@ -4,125 +4,110 @@
 **Giảng viên hướng dẫn:** Huỳnh Xuân Phụng  
 **Đề tài:** Knuth–Morris–Pratt (KMP) String Matching  
 **Ngôn ngữ lập trình:** C++17  
-**GitHub:** https://github.com/tobyasteria/KMP-String-Matching
+**GitHub Repository:** https://github.com/tobyasteria/KMP-String-Matching
 
-## 1. Thông tin nhóm và phân công công việc (C2)
+---
 
-**Thành viên 1: Lương Anh Hào**
-- MSSV: **25110017**; GitHub: **tobyasteria** (quản lý repository).
-- Thiết lập project C++17, triển khai và tích hợp `NaiveSearch()`, `buildLPS()` và `KMPSearch()` với sự hướng dẫn và rà soát của AI.
-- Tích hợp chương trình Console, kiểm tra thực thi thủ công, xử lý vấn đề môi trường, quản lý commit và tổ chức tài liệu/minh chứng.
+## 1. Thông tin nhóm và phân công công việc
 
-**Thành viên 2: Nguyễn Quốc Hào**
-- MSSV: **25110018**; GitHub: **haonguyen457**.
-- Rà soát source code và logic thuật toán; biên dịch và chạy chương trình độc lập trên máy cá nhân; kiểm tra kết quả và góp ý.
+**Lương Anh Hào — MSSV: 25110017 — GitHub: `tobyasteria`**
 
-**Tình hình phân công:** Lương Anh Hào phụ trách lập trình và tích hợp chính, Nguyễn Quốc Hào tham gia review và xác minh độc lập. Các công việc Tuần 2–4 chưa chia cố định và sẽ được cập nhật theo thực tế. GitHub chủ yếu được push từ tài khoản `tobyasteria`, nhưng việc đóng góp của từng người được mô tả riêng, không suy đoán từ tài khoản commit.
+- Tạo cấu trúc project C++17; triển khai và tích hợp Naive Search, LPS, KMP Search.
+- Cấu hình VS Code/G++, chạy chương trình, quản lý GitHub và tập hợp minh chứng.
+
+**Nguyễn Quốc Hào — MSSV: 25110018 — GitHub: `haonguyen457`**
+
+- Rà soát code và logic thuật toán.
+- Biên dịch, chạy thử độc lập trên máy cá nhân và đối chiếu kết quả.
+
+Tuần 1, Lương Anh Hào thực hiện lập trình chính; Nguyễn Quốc Hào đảm nhiệm rà soát và xác minh độc lập. Các công việc Tuần 2 sẽ được phân công khi triển khai.
 
 ## 2. Công việc đã thực hiện
 
-- Phân tích đề tài: cần Naive Search, LPS/failure function, KMP Search, kiểm thử và benchmarking.
-- Khởi tạo cấu trúc `src/`, `include/`, `tests/`, `results/`, `report/`, `evidence/` và môi trường VS Code/G++.
-- **`src/naive.cpp`:** triển khai Naive Search để tìm tất cả vị trí xuất hiện của pattern.
-- **`src/kmp.cpp`:** triển khai `buildLPS()` và `KMPSearch()`, dùng LPS để xử lý mismatch mà không lùi vị trí text.
-- **`include/search.h`:** khai báo các hàm để dùng xuyên suốt các file nguồn.
-- **`src/main.cpp`:** nhập text/pattern, in LPS, kết quả Naive và KMP, đối chiếu bằng `Verification: PASS/FAIL`.
-- Biên dịch/chạy chương trình thủ công bằng G++; bổ sung ảnh output vào repository.
-- Chuẩn bị Hand Trace cho `Text = ABABABAC`, `Pattern = ABABAC`; giải thích tại sao `j` từ 5 quay về 3 khi `i` giữ ở 5.
-- Soạn tài liệu README, AI Usage Log, Self-Explanation và báo cáo tiến độ; kiểm tra nội dung trước khi push.
+- Khởi tạo các thư mục `src/`, `include/`, `tests/`, `results/`, `report/`, `evidence/`.
+- `src/naive.cpp`: triển khai `NaiveSearch()` tìm các vị trí khớp.
+- `src/kmp.cpp`: triển khai `buildLPS()` và `KMPSearch()`.
+- `include/search.h`: khai báo các hàm dùng chung.
+- `src/main.cpp`: nhập text/pattern, in LPS và vị trí khớp; đối chiếu kết quả bằng `Verification: PASS/FAIL`.
+- Biên dịch và chạy thử bằng G++; lưu ảnh kết quả trên GitHub.
+- Chuẩn bị Hand Trace cho text `ABABABAC` và pattern `ABABAC`.
 
-`tests/test_cases.cpp` và `src/benchmark.cpp` hiện vẫn là file dự phòng cho Tuần 2, **chưa triển khai**.
+**Lưu ý:** `tests/test_cases.cpp` và `src/benchmark.cpp` vẫn là các file trống, dự kiến triển khai ở Tuần 2.
 
-## 3. Kết quả đạt được
+## 3. Kết quả và minh chứng
 
-- Đã hoàn thành code nền tảng của cả Naive Search, LPS và KMP Search.
-- Chương trình Console đã có khả năng nhận dữ liệu, in các vị trí khớp (chỉ số bắt đầu từ 0) và kiểm tra hai thuật toán có trả cùng kết quả.
-- Đã có minh chứng một lần chạy chương trình trên GitHub, và thành viên thứ hai đã chạy thử độc lập trên máy của mình.
-- Hiểu thêm mối liên hệ giữa LPS và việc tránh lặp lại phép so sánh trong KMP.
-- **Giới hạn:** đối chiếu Naive–KMP không phải bằng chứng đầy đủ về tính đúng đắn; chưa có bộ test tự động hoặc kết quả đo hiệu suất.
+Nhóm đã triển khai các thuật toán nền tảng và chạy kiểm tra Console ở mức cơ bản. Kết quả trùng nhau giữa Naive và KMP trên một đầu vào chưa thay thế được kiểm thử tự động.
 
-### 3.1. Minh chứng source code (C3)
+### 3.1. Link file nguồn (C3)
 
 - **Naive Search:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/src/naive.cpp
 - **KMP và LPS:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/src/kmp.cpp
-- **Main Program:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/src/main.cpp
+- **Main:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/src/main.cpp
 - **Header:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/include/search.h
 - **README:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/README.md
 - **AI Usage Log:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/AI_USAGE_LOG.md
 - **Hand Trace:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/report/week1_hand_trace.md
 - **Self-Explanation:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/report/week1_self_explanation.md
+- **Báo cáo Tuần 1:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/report/weekly_report_01.md
+- **Cấu hình build:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/.vscode/tasks.json
 
-**Lưu ý:** Những link tài liệu bổ sung chỉ hiển thị nội dung mới sau khi commit/push gói tài liệu Tuần 1.
-
-### 3.2. Minh chứng kiểm thử
-
-Biên dịch từ thư mục gốc:
+### 3.2. Cách biên dịch và ví dụ
 
 ```powershell
 g++ -std=c++17 -Wall -Wextra -Iinclude src/main.cpp src/naive.cpp src/kmp.cpp -o main.exe
 .\main.exe
 ```
 
-Ví dụ dùng để mô phỏng và đối chiếu:
+Với `Text = ABABABAC`, `Pattern = ABABAC`, kết quả mong đợi:
 
-| Nội dung | Kết quả mong đợi |
+| Nội dung | Kết quả |
 |---|---|
-| Text | `ABABABAC` |
-| Pattern | `ABABAC` |
-| LPS | `[0, 0, 1, 2, 3, 0]` |
-| Naive matches | `[2]` |
-| KMP matches | `[2]` |
+| LPS | `0 0 1 2 3 0` |
+| Naive Search | `2` |
+| KMP Search | `2` |
 | Verification | `PASS` |
 
-Đây là **kết quả mong đợi của ví dụ**. Không ghi nhận là bộ kiểm thử tự động đã đạt PASS. Bộ test có dữ liệu đầu vào và expected result sẽ được bổ sung ở Tuần 2.
+**Ảnh Console:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/evidence/01_basic_string_matching.png
 
-**Ảnh Console hiện đã có trên GitHub:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/evidence/01_basic_string_matching.png
+### 3.3. Hand Trace
 
-Thành viên Nguyễn Quốc Hào đã chạy chương trình trên máy riêng. Nhóm sẽ bổ sung ảnh riêng cho hoạt động kiểm tra độc lập nếu thu thập được, không tuyên bố ảnh đó đã có khi chưa tải lên.
+Với pattern `ABABAC`, LPS là `[0, 0, 1, 2, 3, 0]`.
 
-### 3.3. Minh chứng lịch sử commit (C6)
+Khi đã khớp `ABABA` rồi gặp mismatch ở `j = 5`, thuật toán dùng `LPS[4] = 3` để giảm `j` về 3 trong khi giữ nguyên `i = 5`; kết quả khớp bắt đầu ở vị trí 2.
 
-1. **Triển khai Naive và KMP ban đầu:** https://github.com/tobyasteria/KMP-String-Matching/commit/4a2fe8b92f87982f1c895bb501e94f513fb637c1
+**Bảng trace:** https://github.com/tobyasteria/KMP-String-Matching/blob/main/report/week1_hand_trace.md
+
+### 3.4. Lịch sử commit (C6)
+
+1. **Triển khai thuật toán ban đầu:** https://github.com/tobyasteria/KMP-String-Matching/commit/4a2fe8b92f87982f1c895bb501e94f513fb637c1
 2. **Sửa khai báo KMP:** https://github.com/tobyasteria/KMP-String-Matching/commit/a310f75eb8635ec6616e85d6555c4995d2f7ecf5
-3. **Hoàn thiện code Tuần 1:** https://github.com/tobyasteria/KMP-String-Matching/commit/ee9eee8ae3d123e3aec20c481f7bceac0d0e6631
-4. **Đưa ảnh minh chứng lên repository:** https://github.com/tobyasteria/KMP-String-Matching/commit/997a1a53be35621cb8ee15e82d09e855b9bf9b05
+3. **Hoàn thiện chương trình Tuần 1:** https://github.com/tobyasteria/KMP-String-Matching/commit/ee9eee8ae3d123e3aec20c481f7bceac0d0e6631
+4. **Bổ sung ảnh minh chứng:** https://github.com/tobyasteria/KMP-String-Matching/commit/997a1a53be35621cb8ee15e82d09e855b9bf9b05
+5. **Bổ sung tài liệu Tuần 1:** https://github.com/tobyasteria/KMP-String-Matching/commit/ca63cddcbe978290cc136fa2a7a85749822d5190
+6. **Cập nhật README:** https://github.com/tobyasteria/KMP-String-Matching/commit/2e4a2ebfd65f726c7b8d4b4575c3c845486d0c4e
+7. **Hoàn thiện cấu hình build:** https://github.com/tobyasteria/KMP-String-Matching/commit/33576a740640d3beda995764301f4aed8355edbf
 
-Lịch sử đầy đủ: https://github.com/tobyasteria/KMP-String-Matching/commits/main
-
-**Commit tài liệu cuối Tuần 1:** sẽ bổ sung đường dẫn `/commit/<SHA>` sau khi thực hiện commit/push.
-
-### 3.4. Hand Trace KMP
-
-Với `Text = ABABABAC` và `Pattern = ABABAC`, tính được `LPS = [0,0,1,2,3,0]`. Sau khi khớp `ABABA`, so sánh tại `i=5, j=5` thất bại (`B` khác `C`). KMP dùng `lps[4]=3` để đưa `j` về 3, giữ `i=5`. Phép so sánh tiếp theo khớp `B`, và cuối cùng tìm thấy pattern ở vị trí **2**. Chi tiết từng bước nằm ở `report/week1_hand_trace.md`.
+**Toàn bộ lịch sử:** https://github.com/tobyasteria/KMP-String-Matching/commits/main
 
 ## 4. Khó khăn gặp phải
 
-- Ban đầu chưa hiểu rõ ý nghĩa LPS và lý do dùng `len = lps[len-1]`.
-- Phải phân biệt rõ hai chỉ số `i` (text) và `j` (pattern) khi mismatch.
-- IntelliSense của VS Code từng báo sai về `std::vector`/khai báo hàm; cần kiểm tra `includePath` và `compilerPath`.
-- Cần học thêm cách biên dịch nhiều file C++ bằng Terminal và ý nghĩa các tùy chọn của G++.
-- Cấu hình build mặc định của VS Code chưa khớp với lệnh compile đầy đủ; nhóm đã chuẩn bị bản cập nhật.
-- Chưa có test tự động, phép đo thời gian thực tế hoặc số phép so sánh ký tự.
-- Cần bảo đảm các tài liệu và ảnh minh chứng tồn tại thật trên GitHub khi nộp.
+- Ban đầu khó hiểu cách fallback `len = lps[len - 1]` khi tạo LPS.
+- Mất thời gian phân biệt `i` (text) và `j` (pattern) trong KMP.
+- VS Code báo lỗi IntelliSense với `vector` dù vẫn biên dịch được bằng G++.
+- Chưa quen biên dịch nhiều file C++ trong Terminal.
+- README từng được push rỗng; tên file Hand Trace chưa khớp link; task build từng thiếu `src/kmp.cpp` — các lỗi này đã được sửa.
+- Tuần 1 chưa có kiểm thử tự động hoặc kết quả benchmark.
 
 ## 5. Kế hoạch Tuần 2
 
-1. Triển khai `tests/test_cases.cpp` với đầu vào và kết quả mong đợi cụ thể.
-2. Kiểm thử text/pattern rỗng, pattern dài hơn text, không tìm thấy, nhiều lần xuất hiện, chồng lấp và chuỗi lặp.
-3. Đối chiếu Naive và KMP trên nhiều input, không chỉ một ví dụ.
-4. Bổ sung bộ đếm số phép so sánh ký tự theo quy tắc đo thống nhất.
-5. Triển khai `src/benchmark.cpp` đo thời gian với văn bản tự nhiên và dữ liệu đối kháng `aaaa...ab`.
-6. Lưu dữ liệu vào `results/`, chụp ảnh Console và giải thích kết quả.
-7. Phân công trách nhiệm cụ thể giữa hai thành viên, cập nhật AI log/README và commit đều theo từng phần thực hiện.
+- Viết kiểm thử tự động trong `tests/test_cases.cpp` với trường hợp rỗng, không tìm thấy, pattern dài hơn text và khớp chồng lấp.
+- Kiểm tra bằng đáp án mong đợi độc lập, không chỉ đối chiếu hai thuật toán.
+- Thêm thống kê số lần so sánh ký tự.
+- Xây dựng benchmark trong `src/benchmark.cpp` cho văn bản tự nhiên và chuỗi lặp như `aaaa...ab`.
+- Lưu kết quả vào `results/`, bổ sung minh chứng, phân công nhiệm vụ và commit theo tiến độ.
 
-## 6. Sử dụng AI trong Tuần 1 (C7)
+## 6. Đánh giá tiến độ
 
-Nhóm sử dụng **ChatGPT (OpenAI)** để hỗ trợ giải thích Naive Search, LPS và KMP; gợi ý cách triển khai, ví dụ, cấu trúc project; rà soát code; khắc phục lỗi VS Code/G++; soạn Hand Trace, README và báo cáo.
+Phần code Naive, LPS và KMP cùng chương trình Console đã được triển khai. Nhóm đã có ví dụ Hand Trace và minh chứng chạy thử.
 
-**Lương Anh Hào** triển khai/tích hợp và chạy code trong project, điều chỉnh cấu hình và quản lý GitHub. **Nguyễn Quốc Hào** rà soát code và chạy chương trình độc lập. Các thành viên cần hiểu được nội dung nộp và đối chiếu các gợi ý AI với kết quả thực tế. Nhóm không tuyên bố phần code hoặc tài liệu đã được tạo hoàn toàn không có AI hỗ trợ.
-
-Chi tiết: https://github.com/tobyasteria/KMP-String-Matching/blob/main/AI_USAGE_LOG.md (cập nhật sau khi push gói tài liệu).
-
-## 7. Tự đánh giá
-
-Tuần 1 hoàn thành phần code nền tảng của đề tài và có bước chạy thử thủ công. Nhóm đã phân biệt được hoạt động của Naive và KMP, cũng như lý do LPS giúp giảm thao tác lặp khi mismatch. Tuy nhiên, chưa có đủ bằng chứng để đánh giá toàn diện tính đúng đắn và hiệu suất. Tuần 2 sẽ tập trung kiểm thử có expected result và benchmark có số liệu, đồng thời duy trì commit theo tiến độ thực tế.
+Công việc kiểm thử tự động, benchmark và đánh giá số liệu sẽ tiếp tục trong Tuần 2.

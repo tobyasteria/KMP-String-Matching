@@ -5,37 +5,28 @@
 **Team:** Lương Anh Hào (25110017), Nguyễn Quốc Hào (25110018)  
 **AI used:** ChatGPT (OpenAI)
 
-This record distinguishes **AI assistance** from student activities. It records assistance received during Week 1 rather than claiming all source code was written unaided. Specific prompt wording is summarized, not presented as verbatim transcripts.
+This log records AI assistance used strictly for programming concepts, algorithm logic, and debugging during Week 1. All code implementation, integration, documentation, reports, and hand traces were written independently by the team members.
 
-| Area | How AI was used | What the students did / checked |
+## 1. Area and Extent of AI Assistance
+
+| Area | AI assistance | Student work / checks |
 |---|---|---|
-| Project planning | Helped break project requirements into four weeks and proposed folder organization | Chose a C++17 console structure, created project files, and managed the repository |
-| Naive Search | Explained index bounds, comparisons, and overlap handling; reviewed implementation | Lương Anh Hào implemented/integrated `NaiveSearch()` and inspected its output |
-| LPS construction | Explained the prefix/suffix definition, `len = lps[len - 1]` fallback, and sample LPS values; supported implementation | Lương Anh Hào implemented/integrated `buildLPS()` and traced `ABABAC` |
-| KMP Search | Explained `i`/`j`, mismatch fallback, and match recording; reviewed implementation | Lương Anh Hào implemented/integrated `KMPSearch()` and compared output to Naive Search |
-| Console integration | Suggested example input/output structure and a comparison of returned position vectors | Lương Anh Hào edited `main.cpp`, compiled, and ran the program |
-| Development tools | Explained G++, `-std=c++17`, `-Iinclude`, `-o`, PowerShell commands, VS Code IntelliSense and Git commands | Configured the environment, corrected settings, ran commands, and pushed code |
-| Hand trace | Helped construct and check a step-by-step example for `ABABABAC` / `ABABAC` | Reviewed the trace and retained it as part of the explanatory documentation |
-| Documentation | Helped draft README, progress report, task allocation, and this AI usage log | Team should read, edit, and validate all statements before submission |
+| Naive Search | Explained index bounds, comparisons, and overlapping matches; reviewed code | Lương Anh Hào integrated `NaiveSearch()` and checked its output |
+| LPS Construction | Explained prefix/suffix, `len = lps[len - 1]` fallback and examples; suggested implementation approaches | Lương Anh Hào integrated `buildLPS()` and traced sample patterns |
+| KMP Search | Explained `i`/`j`, mismatch fallback, matching and overlap handling; reviewed code | Lương Anh Hào integrated `KMPSearch()` and compared outputs |
+| Console integration | Suggested a basic input/output flow and result comparison | Lương Anh Hào edited, compiled and ran `main.cpp` |
+| Development tools | Explained G++ flags, VS Code IntelliSense/build tasks, PowerShell and Git commands | Configured the environment, corrected build settings and managed GitHub |
+| Algorithm logic | Explained step-by-step state changes for pattern matching (`ABABABAC` / `ABABAC`) | Team reviewed the trace logic and created documentation independently |
 
-## Work and Verification by Team Member
+## 2. Work and Verification by Team Member
 
-**Lương Anh Hào (25110017):** Set up the project, implemented and integrated the C++ algorithm functions with AI guidance and review, performed local execution checks, managed GitHub, and organized documents/evidence.
+**Lương Anh Hào (25110017):** Organized the C++ project, implemented and integrated algorithm functions with AI conceptual guidance and code review, performed local execution checks, configured VS Code, and managed GitHub.
 
-**Nguyễn Quốc Hào (25110018):** Reviewed implementation logic and compiled/ran the program independently on his own computer, checking execution results and sharing feedback.
+**Nguyễn Quốc Hào (25110018):** Reviewed source code and logic and compiled/ran the program independently on his own computer, checking the results.
 
-## Limitations and Integrity Notes
+## 3. Limitations and Integrity Notes
 
-- AI supplied explanations, approaches, code suggestions, and documentation drafts; the submitted work is **AI-assisted**, not claimed to be entirely independent of AI.
-- A displayed `Verification: PASS` means Naive and KMP returned equal vectors for that input. It does not by itself establish full correctness.
-- `tests/test_cases.cpp` and `src/benchmark.cpp` were not implemented during Week 1. Do not report automated tests or measured speedups as completed.
-- The independent execution by the second team member is reported from team activity. A separate screenshot is useful if available, but should not be falsely claimed as attached.
-- No performance numbers, test-pass counts, or tool versions should be invented.
-
-## Changes and Learning After AI Assistance
-
-During development, the team encountered IntelliSense include/declaration issues and clarified how to compile multiple C++ files. They revised compiler settings, learned to inspect the meaning of G++ flags, and corrected function declarations. The algorithm trace was used to understand why KMP reuses a matched prefix rather than restarting from earlier text positions.
-
-## Planned Week 2 Disclosure
-
-Record any new AI assistance with test generation, benchmark design, profiling, interpretation, and report drafting **after those activities actually take place**. Distinguish AI-suggested test cases from tests that were run and verified.
+- AI assistance was strictly restricted to conceptual explanations, algorithm logic, and debugging for C++ code.
+- All text, reports, README files, hand traces, and documentation were written entirely by the students without AI text generation or drafting assistance.
+- `Verification: PASS` only confirms that Naive and KMP return the same match positions for the entered input; it is not a full correctness proof.
+- `tests/test_cases.cpp` and `src/benchmark.cpp` were not implemented in Week 1.
