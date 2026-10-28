@@ -21,17 +21,36 @@ string makeNaturalText(int n) {
     return text;
 }
 
+vector<int> referenceSearch(const string& text, const string& pattern) {
+    vector<int> positions;
+
+    if (pattern.empty()) {
+        return positions;
+    }
+
+    size_t pos = text.find(pattern);
+
+    while (pos != string::npos) {
+        positions.push_back((int)pos);
+        pos = text.find(pattern, pos + 1);
+    }
+
+    return positions;
+}
+
 bool runBenchmark(string name, string text, string pattern, ofstream& csv) {
     vector<int> naiveResult = NaiveSearch(text, pattern);
     vector<int> kmpResult = KMPSearch(text, pattern);
+    vector<int> referenceResult = referenceSearch(text, pattern);
 
     cout << "\nDataset: " << name << endl;
     cout << "Text length: " << text.size() << endl;
     cout << "Pattern length: " << pattern.size() << endl;
 
-    if (naiveResult != kmpResult) {
-        cout << "Verification: FAIL" << endl;
-        return false;
+    if (naiveResult != kmpResult ||
+    naiveResult != referenceResult) {
+    cout << "Verification: FAIL" << endl;
+    return false;
     }
 
     cout << "Verification: PASS" << endl;
