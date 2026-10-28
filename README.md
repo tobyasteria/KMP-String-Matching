@@ -1,97 +1,129 @@
 # KMP String Matching — Đồ án cuối kỳ DSA
 
-Cài đặt và so sánh thuật toán tìm kiếm chuỗi **Naive Search** và **Knuth–Morris–Pratt (KMP)** bằng C++17.
+Dự án C++17 triển khai và so sánh hai thuật toán tìm kiếm chuỗi **Naive Search** và **Knuth–Morris–Pratt (KMP)**. Ngoài chương trình Console, nhóm xây dựng kiểm thử tự động, đo thời gian thực thi và thống kê số phép so sánh ký tự.
 
-## 1. Thông tin chung
+## 1. Thông tin dự án
 
 | Nội dung | Thông tin |
 |---|---|
 | Môn học | Cấu trúc dữ liệu và giải thuật (DASA230179) |
 | Giảng viên | Huỳnh Xuân Phụng |
-| Đề tài | Knuth–Morris–Pratt String Matching |
 | Ngôn ngữ | C++17 |
 | Repository | https://github.com/tobyasteria/KMP-String-Matching |
 
-### Thành viên và phân công Tuần 1
+### Thành viên và phân công thực tế
 
-| Thành viên | MSSV | GitHub | Công việc |
-|---|---|---|---|
-| Lương Anh Hào | 25110017 | `tobyasteria` | Cấu trúc project, triển khai Naive/LPS/KMP, tích hợp Console, chạy thử và quản lý repo |
-| Nguyễn Quốc Hào | 25110018 | `haonguyen457` | Rà soát logic code, biên dịch và chạy kiểm tra độc lập trên máy cá nhân |
+| Thành viên | MSSV | GitHub | Tuần 1 | Tuần 2 |
+|---|---|---|---|---|
+| Lương Anh Hào | 25110017 | `tobyasteria` | Triển khai Naive/LPS/KMP, tích hợp Console, cấu hình môi trường, quản lý GitHub | Automated Testing; kiểm chứng benchmark trên các ví dụ có đáp án xác định trước; thống kê phép so sánh; review và tích hợp qua PR |
+| Nguyễn Quốc Hào | 25110018 | `haonguyen457` | Rà soát code, biên dịch và chạy độc lập | Xây dựng benchmark bằng `std::chrono`, tạo dữ liệu Natural/Adversarial, xuất CSV, bổ sung đối chiếu với `std::string::find()`, mô tả phương pháp và ảnh minh chứng |
 
-Phân công Tuần 2–4 sẽ được cập nhật theo công việc thực tế.
-
-## 2. Cấu trúc thư mục
+## 2. Cấu trúc project
 
 ```text
 KMP_Project/
-├── .vscode/                 # Cấu hình VS Code
-├── src/
-│   ├── main.cpp             # Nhập dữ liệu, in kết quả, đối chiếu
-│   ├── naive.cpp            # NaiveSearch()
-│   ├── kmp.cpp              # buildLPS(), KMPSearch()
-│   └── benchmark.cpp        # Chưa triển khai (Tuần 2)
+├── .vscode/                       # Cấu hình môi trường
 ├── include/
-│   └── search.h             # Khai báo hàm
+│   └── search.h                   # Khai báo các thuật toán
+├── src/
+│   ├── main.cpp                   # Chương trình Console
+│   ├── naive.cpp                  # NaiveSearch()
+│   ├── kmp.cpp                    # buildLPS(), KMPSearch()
+│   ├── benchmark.cpp              # Đo thời gian chạy
+│   └── comparison_count.cpp       # Thống kê phép so sánh
 ├── tests/
-│   └── test_cases.cpp       # Chưa triển khai (Tuần 2)
-├── evidence/
-│   └── 01_basic_string_matching.png
+│   ├── test_cases.cpp             # 17 bài kiểm thử tự động
+│   └── benchmark_validation.cpp   # 5 bài kiểm chứng bổ sung
+├── results/
+│   ├── week2_test_results.txt
+│   ├── benchmark_week2.csv
+│   └── week2_comparison_counts.csv
+├── evidence/                      # Ảnh Console, kết quả benchmark
 ├── report/
+│   ├── weekly_report_01.md
 │   ├── week1_hand_trace.md
 │   ├── week1_self_explanation.md
-│   └── weekly_report_01.md
-├── results/                 # Dành cho dữ liệu benchmark
+│   └── week2_benchmark_method.md
 ├── README.md
-├── AI_USAGE_LOG.md
-└── .gitignore
+└── AI_USAGE_LOG.md
 ```
 
-## 3. Biên dịch và chạy
+## 3. Biên dịch và chạy (Windows / PowerShell)
 
-Yêu cầu: G++ hỗ trợ C++17. Mở Terminal tại thư mục gốc project:
+Yêu cầu: G++ hỗ trợ C++17. Chạy các lệnh từ thư mục gốc project.
+
+**Chương trình tìm kiếm:**
 
 ```powershell
 g++ -std=c++17 -Wall -Wextra -Iinclude src/main.cpp src/naive.cpp src/kmp.cpp -o main.exe
 .\main.exe
 ```
 
-Ví dụ:
+**Kiểm thử tự động:**
 
-```text
-Text: ABABABAC
-Pattern: ABABAC
-LPS: 0 0 1 2 3 0
-Naive matches: 2
-KMP matches: 2
-Verification: PASS
+```powershell
+g++ -std=c++17 -Wall -Wextra -Iinclude tests/test_cases.cpp src/naive.cpp src/kmp.cpp -o tests.exe
+.\tests.exe
 ```
 
-Vị trí tìm thấy được đánh số từ **0**. Chương trình trả về danh sách rỗng khi pattern rỗng. `PASS` chỉ cho biết hai thuật toán cho kết quả giống nhau với đầu vào đang thử; chưa phải bằng chứng kiểm thử đầy đủ.
+**Kiểm chứng bổ sung:**
 
-## 4. Thuật toán và tiến độ
+```powershell
+g++ -std=c++17 -Wall -Wextra -Iinclude tests/benchmark_validation.cpp src/naive.cpp src/kmp.cpp -o validation.exe
+.\validation.exe
+```
 
-| Nội dung | Trạng thái |
+**Benchmark thời gian:**
+
+```powershell
+g++ -std=c++17 -Wall -Wextra -Iinclude src/benchmark.cpp src/naive.cpp src/kmp.cpp -o benchmark.exe
+.\benchmark.exe
+```
+
+**Thống kê phép so sánh ký tự:**
+
+```powershell
+g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/comparison_count.cpp src/naive.cpp src/kmp.cpp -o comparison.exe
+.\comparison.exe
+```
+
+> Chạy benchmark sẽ ghi lại `results/benchmark_week2.csv` trên máy đang chạy. Thời gian đo thay đổi theo phần cứng, trình biên dịch, cờ tối ưu hóa và điều kiện hệ thống. Không so sánh trực tiếp các phép đo có cấu hình biên dịch khác nhau.
+
+## 4. Tiến độ và kết quả Tuần 1–2
+
+| Thành phần | Tình trạng |
 |---|---|
-| Naive Search | Đã triển khai |
-| Xây dựng LPS | Đã triển khai |
-| KMP Search | Đã triển khai |
-| Console và đối chiếu kết quả | Đã triển khai |
-| Hand Trace | Đã có tài liệu |
-| Kiểm thử tự động | Dự kiến Tuần 2 |
-| Benchmark tự nhiên / chuỗi lặp | Dự kiến Tuần 2 |
+| Naive Search, xây dựng LPS và KMP Search | Hoàn thành Tuần 1 |
+| Console, Hand Trace | Hoàn thành Tuần 1 |
+| Automated Testing | 17/17 PASS trên máy thành viên |
+| Benchmark Validation | 5/5 PASS trên máy thành viên |
+| Benchmark thời gian | 6 bộ dữ liệu, kết quả lưu trong CSV |
+| Character Comparison Counting | 6 bộ dữ liệu, đối chiếu với thuật toán gốc đều PASS |
 
-Naive Search có độ phức tạp xấu nhất **O(n × m)**. Xây dựng LPS cần **O(m)**; KMP Search cần **O(n)** sau tiền xử lý, tổng cộng **O(n + m)**.
+Bộ benchmark dùng hai nhóm dữ liệu: **Natural** (một câu tiếng Anh được lặp lại) và **Adversarial** (text toàn ký tự `a`, pattern gồm 100 ký tự `a` và ký tự `b` cuối cùng), với độ dài text 10.000, 50.000 và 100.000 ký tự. Thời gian được đo bằng `std::chrono::steady_clock` với hai lượt warm-up và trung bình 10 lượt chạy. Mã benchmark còn đối chiếu vị trí khớp bằng `std::string::find()`.
 
-## 5. Tài liệu và minh chứng
+Các bộ đếm phép so sánh được triển khai trong file riêng, không sửa các hàm thuật toán ban đầu. **Số phép so sánh của phiên bản có bộ đếm không được hiểu là phép đo trực tiếp trên bản `src/kmp.cpp` gốc**, do cách tổ chức điều kiện của KMP có khác biệt.
 
-- [Báo cáo Tuần 1](report/weekly_report_01.md)
+`PASS` chỉ xác nhận các trường hợp đã chạy và các phép đối chiếu đã thực hiện; không phải chứng minh thuật toán đúng với mọi dữ liệu.
+
+## 5. Minh chứng và tài liệu
+
+- [Báo cáo tiến độ Tuần 1](report/weekly_report_01.md)
 - [Hand Trace KMP](report/week1_hand_trace.md)
 - [Ghi chú giải thích thuật toán](report/week1_self_explanation.md)
-- [AI Usage Log](AI_USAGE_LOG.md)
-- [Ảnh kết quả Console](evidence/01_basic_string_matching.png)
+- [Kết quả kiểm thử tự động](results/week2_test_results.txt)
+- [Kết quả benchmark thời gian](results/benchmark_week2.csv)
+- [Kết quả thống kê phép so sánh](results/week2_comparison_counts.csv)
+- [Phương pháp đo Benchmark Tuần 2](report/week2_benchmark_method.md)
+- [Ảnh Automated Testing](evidence/week2_automated_tests.png)
+- [Ảnh Comparison Counting cơ bản](evidence/week2_comparison_basic.png)
+- [Ảnh Comparison Counting trên dữ liệu lớn](evidence/week2_comparison_benchmark.png)
+- [Ảnh Benchmark](evidence/week2_benchmark.png)
+- [Pull Request #1 — Testing](https://github.com/tobyasteria/KMP-String-Matching/pull/1)
+- [Pull Request #2 — Comparison Counting](https://github.com/tobyasteria/KMP-String-Matching/pull/2)
+- [Pull Request #3 — Benchmark](https://github.com/tobyasteria/KMP-String-Matching/pull/3)
 - [Lịch sử commit](https://github.com/tobyasteria/KMP-String-Matching/commits/main)
 
-## 6. Minh bạch sử dụng AI
+## 6. Sử dụng AI
 
-Nhóm sử dụng ChatGPT (OpenAI) để hỗ trợ tìm hiểu khái niệm thuật toán, gợi ý cấu trúc code C++, rà soát lỗi logic và xử lý lỗi môi trường (G++, VS Code). Toàn bộ nội dung báo cáo, mã nguồn tích hợp, tài liệu hướng dẫn và các file ghi chú đều do các thành viên tự viết và kiểm duyệt. Thông tin chi tiết được ghi trong [AI_USAGE_LOG.md](AI_USAGE_LOG.md).
+Nhóm sử dụng ChatGPT (OpenAI) trong quá trình tìm hiểu thuật toán, tham khảo các gợi ý triển khai code, hỗ trợ xử lý lỗi C++/VS Code/Git, kiểm tra kết quả và hoàn thiện quy trình làm việc. Mức độ hỗ trợ cụ thể của từng tuần và trách nhiệm kiểm tra của các thành viên được ghi tại [AI_USAGE_LOG.md](AI_USAGE_LOG.md).
