@@ -109,6 +109,7 @@ Các bộ đếm phép so sánh được triển khai trong file riêng, không 
 ## 5. Minh chứng và tài liệu
 
 - [Báo cáo tiến độ Tuần 1](report/weekly_report_01.md)
+- [Báo cáo tiến độ Tuần 2](report/weekly_report_02.md)
 - [Hand Trace KMP](report/week1_hand_trace.md)
 - [Ghi chú giải thích thuật toán](report/week1_self_explanation.md)
 - [Kết quả kiểm thử tự động](results/week2_test_results.txt)
