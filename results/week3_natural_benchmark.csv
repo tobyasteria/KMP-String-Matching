@@ -1,0 +1,4 @@
+Dataset,TextLength,PatternLength,Repetitions,NaiveAvg_us,KMPAvg_us,MatchCount,Verification
+Natural,10000,15,10,10.540,17.780,2,PASS
+Natural,50000,15,10,50.060,91.340,12,PASS
+Natural,100000,15,10,100.660,174.410,22,PASS
