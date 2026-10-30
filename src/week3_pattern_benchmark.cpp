@@ -13,6 +13,7 @@ namespace {
 const int TEXT_LENGTH = 100000;
 const int WARM_UP_RUNS = 2;
 const int REPETITIONS = 10;
+volatile std::size_t totalChecksum = 0;
 
 std::vector<int> findWithStd(const std::string& text, const std::string& pattern) {
     std::vector<int> positions;
@@ -33,24 +34,31 @@ std::vector<int> findWithStd(const std::string& text, const std::string& pattern
 template <typename SearchFunction>
 double measureAverageUs(SearchFunction search, const std::string& text,
                         const std::string& pattern) {
-    std::size_t checksum = 0;
+    std::vector<std::vector<int>> results(REPETITIONS);
+
     const auto start = std::chrono::steady_clock::now();
 
     for (int i = 0; i < REPETITIONS; ++i) {
-        std::vector<int> result = search(text, pattern);
-        checksum += result.size();
-        if (!result.empty()) {
-            checksum += static_cast<std::size_t>(result.back());
-        }
+        results[i] = search(text, pattern);
     }
 
     const auto finish = std::chrono::steady_clock::now();
-    // Keep the returned results observable outside the timed section.
-    static std::size_t totalChecksum = 0;
-    totalChecksum += checksum;
+
+    std::size_t checksum = 0;
+
+    for (const auto& result : results) {
+        checksum = checksum * 31 + result.size() + 1;
+
+        for (int pos : result) {
+            checksum = checksum * 31 + static_cast<std::size_t>(pos + 1);
+        }
+    }
+
+    totalChecksum = totalChecksum + checksum;
 
     const double totalUs =
         std::chrono::duration<double, std::micro>(finish - start).count();
+
     return totalUs / REPETITIONS;
 }
 
@@ -92,37 +100,45 @@ int main() {
     bool allPassed = true;
 
     for (int m : patternLengths) {
-        // m - 1 'a' characters followed by 'b'; this pattern is absent.
-        const std::string pattern = std::string(m - 1, 'a') + 'b';
+    const std::string pattern = std::string(m - 1, 'a') + 'b';
 
-        warmUp(text, pattern);
+    const std::vector<int> expected = findWithStd(text, pattern);
 
-        const std::vector<int> expected = findWithStd(text, pattern);
-        const std::vector<int> naiveResult = NaiveSearch(text, pattern);
-        const std::vector<int> kmpResult = KMPSearch(text, pattern);
-        const bool verified = (naiveResult == expected && kmpResult == expected);
-        allPassed = allPassed && verified;
-
-        const double naiveAvg =
-            measureAverageUs(NaiveSearch, text, pattern);
-        const double kmpAvg =
-            measureAverageUs(KMPSearch, text, pattern);
-
-        const char* verification = verified ? "PASS" : "FAIL";
-
-        csv << "Adversarial," << TEXT_LENGTH << ',' << m << ',' << REPETITIONS
-            << ',' << std::fixed << std::setprecision(3) << naiveAvg
-            << ',' << kmpAvg << ',' << expected.size() << ',' << verification
-            << '\n';
-
-        std::cout << std::left << std::setw(12) << m
-                  << std::setw(18) << std::fixed << std::setprecision(3)
-                  << naiveAvg << std::setw(18) << kmpAvg
-                  << std::setw(14) << expected.size() << verification << '\n';
+    if (!expected.empty()) {
+        std::cerr << "Verification FAIL: std::string::find() "
+                  << "returned unexpected matches for m = " << m << '\n';
+        return 2;
     }
+
+    const std::vector<int> naiveResult = NaiveSearch(text, pattern);
+    const std::vector<int> kmpResult = KMPSearch(text, pattern);
+
+    if (naiveResult != expected || kmpResult != expected) {
+        std::cerr << "Verification FAIL for m = " << m << '\n';
+        return 3;
+    }
+
+    warmUp(text, pattern);
+
+    const double naiveAvg =
+        measureAverageUs(NaiveSearch, text, pattern);
+
+    const double kmpAvg =
+        measureAverageUs(KMPSearch, text, pattern);
+
+    csv << "Adversarial," << TEXT_LENGTH << ',' << m << ',' << REPETITIONS
+        << ',' << std::fixed << std::setprecision(3) << naiveAvg
+        << ',' << kmpAvg << ',' << expected.size() << ",PASS\n";
+
+    std::cout << std::left << std::setw(12) << m
+              << std::setw(18) << std::fixed << std::setprecision(3)
+              << naiveAvg << std::setw(18) << kmpAvg
+              << std::setw(14) << expected.size() << "PASS\n";
+}
 
     csv.close();
     std::cout << "\nCSV saved: results/week3_pattern_benchmark.csv\n";
+    std::cout << "Total checksum: " << totalChecksum << '\n';
     std::cout << "Overall verification: " << (allPassed ? "PASS" : "FAIL")
               << '\n';
 

@@ -15,6 +15,7 @@ namespace {
 
 const int WARM_UP_RUNS = 2;
 const int REPETITIONS = 10;
+volatile std::size_t totalChecksum = 0;
 const std::string PATTERN = "Sherlock Holmes"; // 15 ASCII characters
 const std::vector<int> TEXT_LENGTHS = {10000, 50000, 100000};
 const std::string DEFAULT_SOURCE = "data/week3_natural_source.txt";
@@ -92,23 +93,30 @@ std::vector<int> findWithStd(const std::string& text, const std::string& pattern
 template <typename SearchFunction>
 double measureAverageUs(SearchFunction search, const std::string& text,
                         const std::string& pattern) {
-    std::size_t checksum = 0;
+    std::vector<std::vector<int>> results(REPETITIONS);
+
     const auto start = std::chrono::steady_clock::now();
 
     for (int i = 0; i < REPETITIONS; ++i) {
-        std::vector<int> result = search(text, pattern);
-        checksum += result.size();
-        if (!result.empty()) {
-            checksum += static_cast<std::size_t>(result.back());
+        results[i] = search(text, pattern);
+    }
+
+        const auto finish = std::chrono::steady_clock::now();
+    std::size_t checksum = 0;
+
+    for (const auto& result : results) {
+        checksum = checksum * 31 + result.size() + 1;
+
+        for (int pos : result) {
+            checksum = checksum * 31 + static_cast<std::size_t>(pos + 1);
         }
     }
 
-    const auto finish = std::chrono::steady_clock::now();
-    static std::size_t totalChecksum = 0;
-    totalChecksum += checksum;
+    totalChecksum = totalChecksum + checksum;
 
     const double totalUs =
         std::chrono::duration<double, std::micro>(finish - start).count();
+
     return totalUs / REPETITIONS;
 }
 
@@ -194,6 +202,7 @@ int main(int argc, char* argv[]) {
 
         csv.close();
         std::cout << "\nCSV saved: results/week3_natural_benchmark.csv\n";
+        std::cout << "Total checksum: " << totalChecksum << '\n';
         std::cout << "Overall verification: " << (allPassed ? "PASS" : "FAIL")
                   << '\n';
 

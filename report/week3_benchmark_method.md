@@ -91,3 +91,31 @@ Both benchmarks were compiled and executed on the student's Windows computer.
 Both CSV files were regenerated on the student's computer using the downloaded Project Gutenberg text and the specified benchmark datasets. All test cases passed verification against `std::string::find()`.
 
 The measured execution times are specific to this computer and should not be treated as universal performance values. The CPU model was not recorded.
+## 9. Pattern Comparison Count
+
+An additional experiment was implemented in `src/week3_pattern_comparison.cpp` to count character comparisons for different pattern lengths.
+
+- Text length: `n = 100000`.
+- Pattern lengths: `m = 10, 50, 100, 500, 1000`.
+- Dataset: Adversarial text consisting of 100,000 characters `a`.
+- Each pattern contains `m - 1` characters `a`, followed by `b`.
+
+The program records four comparison counts:
+
+- `NaiveComparisons`: character comparisons performed by Naive Search, including mismatches.
+- `LPSComparisons`: character comparisons performed while constructing the LPS table.
+- `KMPSearchComparisons`: character comparisons performed during KMP searching.
+- `KMPTotalComparisons`: the sum of LPS preprocessing and KMP searching comparisons.
+
+The comparison-counting implementations are kept separate from the original search algorithms. Their match positions and LPS results are checked against the existing implementations and `std::string::find()`.
+
+The results are saved in `results/week3_pattern_comparisons.csv`. All five test cases passed verification.
+
+Build and run:
+
+```powershell
+g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_pattern_comparison.cpp src/naive.cpp src/kmp.cpp -o week3_pattern_comparison.exe
+.\week3_pattern_comparison.exe
+```
+
+The comparison counts describe character comparisons, not execution time. They should be interpreted separately from the timing results.
