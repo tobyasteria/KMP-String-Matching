@@ -1,0 +1,6 @@
+Dataset,TextLength,PatternLength,NaiveComparisons,LPSComparisons,KMPSearchComparisons,KMPTotalComparisons,Verification
+Adversarial,100000,10,999910,17,199991,200008,PASS
+Adversarial,100000,50,4997550,97,199951,200048,PASS
+Adversarial,100000,100,9990100,197,199901,200098,PASS
+Adversarial,100000,500,49750500,997,199501,200498,PASS
+Adversarial,100000,1000,99001000,1997,199001,200998,PASS
