@@ -1,8 +1,8 @@
 # KMP String Matching — Đồ án cuối kỳ DSA
 
-Dự án C++17 triển khai và so sánh hai thuật toán tìm kiếm chuỗi **Naive Search** và **Knuth–Morris–Pratt (KMP)**.
+Dự án C++17 triển khai, kiểm thử và so sánh hai thuật toán tìm kiếm chuỗi **Naive Search** và **Knuth–Morris–Pratt (KMP)**.
 
-Dự án bao gồm chương trình Console, kiểm thử tự động, Benchmark thời gian thực thi, thống kê số phép so sánh ký tự và phân tích độ phức tạp thuật toán.
+Nội dung bao gồm chương trình Console, Automated Testing, Benchmarking, thống kê phép so sánh ký tự, phân tích độ phức tạp và đánh giá hiệu suất thực nghiệm.
 
 ## 1. Thông tin dự án
 
@@ -16,30 +16,29 @@ Dự án bao gồm chương trình Console, kiểm thử tự động, Benchmark
 
 ### Thành viên và phân công
 
-| Thành viên | MSSV | GitHub | Công việc |
+| Thành viên | MSSV | GitHub | Công việc chính |
 |---|---|---|---|
-| Lương Anh Hào | 25110017 | `tobyasteria` | Triển khai Naive/LPS/KMP, Automated Testing, Benchmark Validation, Comparison Counting Tuần 2, Complexity Analysis Tuần 3, quản lý GitHub |
-| Nguyễn Quốc Hào | 25110018 | `haonguyen457` | Rà soát thuật toán, xây dựng Benchmark Tuần 2, mở rộng thí nghiệm pattern length và Natural Text Tuần 3, thống kê phép so sánh, lưu minh chứng |
+| Lương Anh Hào | 25110017 | `tobyasteria` | Triển khai thuật toán, Automated Testing, Benchmark Validation, Complexity Analysis, tích hợp và quản lý GitHub |
+| Nguyễn Quốc Hào | 25110018 | `haonguyen457` | Benchmarking, Natural/Adversarial Datasets, Pattern Length Experiments, Comparison Counting và minh chứng thực nghiệm |
 
-## 2. Cấu trúc project
+## 2. Cấu trúc dự án
 
 ```text
 KMP-String-Matching/
-├── .vscode/                        # Cấu hình VS Code
 ├── include/
-│   └── search.h                    # Khai báo hàm thuật toán
+│   └── search.h
 ├── src/
-│   ├── main.cpp                    # Chương trình Console
-│   ├── naive.cpp                   # NaiveSearch()
-│   ├── kmp.cpp                     # buildLPS(), KMPSearch()
-│   ├── benchmark.cpp               # Benchmark Tuần 2
-│   ├── comparison_count.cpp        # Đếm phép so sánh Tuần 2
-│   ├── week3_pattern_benchmark.cpp # Benchmark theo pattern length
-│   ├── week3_natural_benchmark.cpp # Benchmark Natural Text
-│   └── week3_pattern_comparison.cpp # Đếm so sánh theo pattern length
+│   ├── main.cpp
+│   ├── naive.cpp
+│   ├── kmp.cpp
+│   ├── benchmark.cpp
+│   ├── comparison_count.cpp
+│   ├── week3_pattern_benchmark.cpp
+│   ├── week3_natural_benchmark.cpp
+│   └── week3_pattern_comparison.cpp
 ├── tests/
-│   ├── test_cases.cpp              # 17 Automated Tests
-│   └── benchmark_validation.cpp    # 5 Validation Tests
+│   ├── test_cases.cpp
+│   └── benchmark_validation.cpp
 ├── results/
 │   ├── week2_test_results.txt
 │   ├── benchmark_week2.csv
@@ -47,27 +46,33 @@ KMP-String-Matching/
 │   ├── week3_pattern_benchmark.csv
 │   ├── week3_natural_benchmark.csv
 │   └── week3_pattern_comparisons.csv
-├── evidence/                       # Ảnh Terminal và biểu đồ
+├── evidence/
+│   └── week4_final_tests.png
 ├── report/
 │   ├── weekly_report_01.md
 │   ├── weekly_report_02.md
+│   ├── weekly_report_03.md
+│   ├── weekly_report_04.md
 │   ├── week1_hand_trace.md
 │   ├── week1_self_explanation.md
 │   ├── week2_benchmark_method.md
+│   ├── week3_benchmark_method.md
 │   ├── week3_complexity_analysis.md
-│   └── week3_benchmark_method.md
+│   ├── week4_final_summary.md
+│   └── week4_defense_notes.md
 ├── tools/
 │   └── download_week3_natural_text.ps1
 ├── README.md
-├── AI_USAGE_LOG.md
-└── .gitignore
+└── AI_USAGE_LOG.md
 ```
 
-**Lưu ý:** Thư mục `data/` được tạo trên máy khi tải dữ liệu Natural Text và không cần đưa toàn bộ văn bản nguồn lên GitHub.
+Thư mục `evidence/` còn chứa ảnh Benchmark, Comparison Counting và biểu đồ của các tuần trước. Dữ liệu Natural Text được tải về máy khi thực hiện thí nghiệm, không lưu toàn bộ văn bản nguồn trong repository.
 
-## 3. Biên dịch và chạy
+## 3. Hướng dẫn biên dịch và chạy
 
-Yêu cầu: G++ hỗ trợ C++17. Chạy lệnh trong PowerShell tại thư mục gốc project.
+**Yêu cầu:** Trình biên dịch G++ hỗ trợ C++17.
+
+Thực hiện các lệnh trong PowerShell tại thư mục gốc dự án.
 
 ### 3.1. Chương trình chính
 
@@ -87,46 +92,50 @@ KMP matches: 2
 Verification: PASS
 ```
 
-Vị trí tìm thấy được đánh số từ 0.
+Vị trí khớp được đánh số từ 0.
 
 ### 3.2. Automated Testing
 
 ```powershell
-g++ -std=c++17 -Wall -Wextra -Iinclude tests/test_cases.cpp src/naive.cpp src/kmp.cpp -o tests.exe
+g++ -std=c++17 -O2 -Wall -Wextra -Iinclude tests/test_cases.cpp src/naive.cpp src/kmp.cpp -o tests.exe
 .\tests.exe
 ```
 
-Kết quả ghi nhận: **17/17 PASS**.
+**Kết quả:** 17/17 PASS.
 
 ### 3.3. Benchmark Validation
 
 ```powershell
-g++ -std=c++17 -Wall -Wextra -Iinclude tests/benchmark_validation.cpp src/naive.cpp src/kmp.cpp -o validation.exe
+g++ -std=c++17 -O2 -Wall -Wextra -Iinclude tests/benchmark_validation.cpp src/naive.cpp src/kmp.cpp -o validation.exe
 .\validation.exe
 ```
 
-Kết quả ghi nhận: **5/5 PASS**.
+**Kết quả:** 5/5 PASS.
 
-### 3.4. Benchmark và Comparison Counting Tuần 2
+### 3.4. Benchmark Tuần 2
 
 ```powershell
-g++ -std=c++17 -Wall -Wextra -Iinclude src/benchmark.cpp src/naive.cpp src/kmp.cpp -o benchmark.exe
+g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/benchmark.cpp src/naive.cpp src/kmp.cpp -o benchmark.exe
 .\benchmark.exe
+```
 
+### 3.5. Comparison Counting Tuần 2
+
+```powershell
 g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/comparison_count.cpp src/naive.cpp src/kmp.cpp -o comparison.exe
 .\comparison.exe
 ```
 
-### 3.5. Pattern Length Benchmark Tuần 3
+### 3.6. Pattern Length Benchmark Tuần 3
 
 ```powershell
 g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_pattern_benchmark.cpp src/naive.cpp src/kmp.cpp -o week3_pattern_benchmark.exe
 .\week3_pattern_benchmark.exe
 ```
 
-### 3.6. Natural Text Benchmark Tuần 3
+### 3.7. Natural Text Benchmark Tuần 3
 
-Tải văn bản nguồn từ Project Gutenberg:
+Tải dữ liệu:
 
 ```powershell
 powershell -File tools/download_week3_natural_text.ps1
@@ -141,66 +150,92 @@ g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_natural_benchmark.cpp src/n
 
 Nguồn văn bản: *The Adventures of Sherlock Holmes* — Arthur Conan Doyle, Project Gutenberg eBook #1661.
 
-### 3.7. Pattern Comparison Counting Tuần 3
+### 3.8. Pattern Comparison Counting Tuần 3 và kiểm chứng Tuần 4
 
 ```powershell
 g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_pattern_comparison.cpp src/naive.cpp src/kmp.cpp -o week3_pattern_comparison.exe
 .\week3_pattern_comparison.exe
 ```
 
-**Lưu ý:** Chạy Benchmark có thể ghi đè CSV kết quả đã lưu. Thời gian chạy thay đổi theo máy tính, trình biên dịch và mức tối ưu hóa.
+**Kết quả:** 5/5 PASS.
 
-## 4. Tiến độ và kết quả
+Lưu ý: Khi chạy lại Benchmark, chương trình có thể ghi đè các file CSV đã lưu. Thời gian thực thi có thể thay đổi theo phần cứng, trình biên dịch và môi trường chạy.
+
+## 4. Tiến độ thực hiện
 
 ### Tuần 1 — Core Implementation
 
 - Triển khai `NaiveSearch()`, `buildLPS()` và `KMPSearch()`.
-- Tích hợp chương trình Console và đối chiếu kết quả.
-- Hoàn thành Hand Trace với text `ABABABAC` và pattern `ABABAC`.
-- Cấu hình môi trường G++/VS Code và quản lý GitHub.
+- Xây dựng chương trình Console bằng C++17.
+- Kiểm tra kết quả tìm kiếm giữa Naive và KMP.
+- Thực hiện Hand Trace với text `ABABABAC` và pattern `ABABAC`.
+- Cấu hình môi trường phát triển và GitHub.
 
-**Trạng thái:** Đã được giảng viên duyệt.
+**Trạng thái:** Hoàn thành, đã được giảng viên duyệt.
 
 ### Tuần 2 — Automated Testing và Benchmarking
 
-- Automated Testing: **17/17 PASS**.
-- Benchmark Validation: **5/5 PASS**.
-- Benchmark trên 6 bộ dữ liệu Natural và Adversarial.
-- Triển khai bộ đếm phép so sánh ký tự.
-- Xuất kết quả CSV và ảnh Terminal.
+- Xây dựng 17 Automated Tests.
+- Thực hiện 5 Benchmark Validation Tests.
+- Benchmark trên dữ liệu Natural và Adversarial.
+- Đo số phép so sánh ký tự của Naive, LPS và KMP.
+- Xuất dữ liệu CSV, lưu ảnh minh chứng.
 - Hoàn thành và merge PR #1, #2 và #3.
 
-**Kết quả:** Trên dữ liệu đối kháng dài 100.000 ký tự, KMP chạy nhanh hơn khoảng 21,6 lần và thực hiện ít hơn khoảng 50,4 lần số phép so sánh. Trên dữ liệu Natural mô phỏng bằng một câu tiếng Anh lặp lại, Naive chạy nhanh hơn trong các thí nghiệm đã thực hiện.
+**Kết quả:** Với dữ liệu đối kháng dài 100.000 ký tự, KMP nhanh hơn khoảng 21,6 lần và thực hiện ít hơn khoảng 50,4 lần số phép so sánh so với Naive.
 
-**Trạng thái:** Đã được giảng viên duyệt.
+Trên dữ liệu Natural đã thử nghiệm, Naive có thời gian chạy thấp hơn.
 
-### Tuần 3 — Complexity Analysis và Benchmark mở rộng
+**Trạng thái:** Hoàn thành, đã được giảng viên duyệt.
 
-**Phân công:**
+### Tuần 3 — Complexity Analysis và Extended Benchmarking
 
-- Lương Anh Hào: phân tích Time Complexity và Space Complexity của Naive, LPS, KMP; đối chiếu lý thuyết với số liệu Tuần 2; review và tích hợp GitHub.
-- Nguyễn Quốc Hào: Benchmark thay đổi pattern length, bổ sung dữ liệu Natural đa dạng, đếm phép so sánh và lưu minh chứng.
+- Phân tích Time Complexity và Space Complexity.
+- Liên hệ lý thuyết với dữ liệu thực nghiệm.
+- Giữ text length `n = 100000`, thay đổi pattern length `m = 10, 50, 100, 500, 1000`.
+- Mở rộng Benchmark bằng văn bản *The Adventures of Sherlock Holmes*.
+- Kiểm tra kết quả bằng `std::string::find()`.
+- Xây dựng bộ đếm phép so sánh và biểu đồ.
+- Review và merge PR #4.
 
-**Công việc hoàn thành:**
+**Kết quả:**
 
-- Phân tích độ phức tạp Naive: O(n × m) trong trường hợp xấu nhất.
-- Phân tích LPS Construction: O(m).
-- Phân tích KMP tổng: O(n + m).
-- Pattern Length Benchmark: **5/5 PASS**.
-- Natural Text Benchmark: **3/3 PASS**.
-- Pattern Comparison Counting: **5/5 PASS**.
-- Tạo biểu đồ so sánh thời gian thực thi và số phép so sánh.
+- Pattern Length Benchmark: 5/5 PASS.
+- Natural Text Benchmark: 3/3 PASS.
+- Pattern Comparison Counting: 5/5 PASS.
 
-**Thiết kế thí nghiệm:**
+**Trạng thái:** Hoàn thành và tích hợp vào `main`.
 
-- Dữ liệu Adversarial: giữ `n = 100000`, thay đổi `m = 10, 50, 100, 500, 1000`.
-- Dữ liệu Natural: sử dụng văn bản *The Adventures of Sherlock Holmes* với `n = 10000, 50000, 100000` và pattern `Sherlock Holmes` dài 15 ký tự.
-- Đo thời gian bằng `std::chrono::steady_clock`, 2 lượt warm-up và 10 lượt đo.
-- Kiểm chứng kết quả tìm kiếm bằng `std::string::find()`.
+### Tuần 4 — Final Verification và Project Completion
 
-**Kết quả Pattern Length Benchmark:**
+- Chạy lại Automated Testing: **17/17 PASS**.
+- Chạy lại Benchmark Validation: **5/5 PASS**.
+- Chạy lại Pattern Comparison Counting: **5/5 PASS**.
+- Lưu ảnh minh chứng `evidence/week4_final_tests.png`.
+- Tổng hợp kết quả triển khai, kiểm thử và Benchmark.
+- Hoàn thiện Final Project Summary, Defense Notes và Weekly Report 04.
+- Cập nhật tài liệu GitHub và chuẩn bị bảo vệ.
 
-| Pattern Length | Naive Avg (µs) | KMP Avg (µs) |
+**Trạng thái:** Hoàn thành phần triển khai, kiểm thử và tài liệu.
+
+## 5. Tổng hợp kết quả thực nghiệm
+
+### 5.1. Độ phức tạp thuật toán
+
+| Thuật toán | Time Complexity | Auxiliary Space |
+|---|---|---|
+| Naive Search | O(n × m), worst case | O(1) |
+| LPS Construction | O(m) | O(m) |
+| KMP Search | O(n), sau tiền xử lý | O(1) ngoài LPS |
+| KMP tổng | O(n + m) | O(m) |
+
+Bộ nhớ phụ chưa tính danh sách các vị trí khớp trả về.
+
+### 5.2. Pattern Length Benchmark
+
+Dữ liệu Adversarial: `n = 100000`, pattern gồm `m - 1` ký tự `a` và kết thúc bằng `b`.
+
+| Pattern m | Naive Avg (µs) | KMP Avg (µs) |
 |---|---:|---:|
 | 10 | 493,140 | 239,310 |
 | 50 | 2.177,650 | 240,590 |
@@ -208,9 +243,11 @@ g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_pattern_comparison.cpp src/
 | 500 | 21.681,930 | 241,510 |
 | 1.000 | 42.249,980 | 240,690 |
 
-**Kết quả Pattern Comparison Counting:**
+Với `m = 1000`, KMP nhanh hơn khoảng **175,5 lần** trong phép đo này.
 
-| Pattern Length | Naive Comparisons | KMP Total |
+### 5.3. Character Comparison Counting
+
+| Pattern m | Naive Comparisons | KMP Total Comparisons |
 |---|---:|---:|
 | 10 | 999.910 | 200.008 |
 | 50 | 4.997.550 | 200.048 |
@@ -218,64 +255,86 @@ g++ -std=c++17 -O2 -Wall -Wextra -Iinclude src/week3_pattern_comparison.cpp src/
 | 500 | 49.750.500 | 200.498 |
 | 1.000 | 99.001.000 | 200.998 |
 
-Khi độ dài pattern tăng, số phép so sánh của Naive tăng rất mạnh, còn KMP gần như ổn định trong thí nghiệm này. Đây là kết quả phù hợp với phân tích lý thuyết O(n × m) và O(n + m).
+Với `m = 1000`, Naive thực hiện khoảng **492,5 lần** số phép so sánh của KMP.
 
-Trên dữ liệu Natural từ văn bản thực tế, Naive tiếp tục có thời gian chạy thấp hơn KMP trong ba kích thước đã thử nghiệm.
+### 5.4. Natural Text Benchmark
 
-**Trạng thái:** Đã triển khai và tích hợp vào nhánh `main`; chưa có kết quả xét duyệt Tuần 3.
+Pattern: `Sherlock Holmes`, độ dài 15 ký tự.
 
-## 5. Minh chứng và tài liệu
+| Text Length | Naive Avg (µs) | KMP Avg (µs) |
+|---|---:|---:|
+| 10.000 | 10,540 | 17,780 |
+| 50.000 | 50,060 | 91,340 |
+| 100.000 | 100,660 | 174,410 |
+
+Trên các trường hợp Natural này, Naive chạy nhanh hơn KMP.
+
+**Nhận xét:** KMP có ưu thế về độ phức tạp trường hợp xấu nhất, nhưng không luôn có thời gian chạy thấp hơn Naive trên mọi dữ liệu.
+
+## 6. Báo cáo và minh chứng
 
 ### Tuần 1
 
-- [Báo cáo tiến độ Tuần 1](report/weekly_report_01.md)
-- [Hand Trace KMP](report/week1_hand_trace.md)
-- [Self-Explanation](report/week1_self_explanation.md)
-- [Ảnh chạy Console](evidence/01_basic_string_matching.png)
+- [Weekly Report 01](report/weekly_report_01.md)
+- [Hand Trace](report/week1_hand_trace.md)
+- [Self Explanation](report/week1_self_explanation.md)
+- [Console Evidence](evidence/01_basic_string_matching.png)
 
 ### Tuần 2
 
-- [Báo cáo tiến độ Tuần 2](report/weekly_report_02.md)
+- [Weekly Report 02](report/weekly_report_02.md)
 - [Automated Testing Results](results/week2_test_results.txt)
 - [Benchmark CSV](results/benchmark_week2.csv)
-- [Comparison Counts CSV](results/week2_comparison_counts.csv)
+- [Comparison Counting CSV](results/week2_comparison_counts.csv)
 - [Benchmark Method](report/week2_benchmark_method.md)
-- [Ảnh Automated Testing](evidence/week2_automated_tests.png)
-- [Ảnh Benchmark](evidence/week2_benchmark.png)
-- [Ảnh Comparison Counting](evidence/week2_comparison_benchmark.png)
+- [Automated Testing Evidence](evidence/week2_automated_tests.png)
+- [Benchmark Evidence](evidence/week2_benchmark.png)
 
 ### Tuần 3
 
+- [Weekly Report 03](report/weekly_report_03.md)
 - [Complexity Analysis](report/week3_complexity_analysis.md)
 - [Benchmark Method](report/week3_benchmark_method.md)
-- [Pattern Length Benchmark CSV](results/week3_pattern_benchmark.csv)
-- [Natural Text Benchmark CSV](results/week3_natural_benchmark.csv)
-- [Pattern Comparison Counts CSV](results/week3_pattern_comparisons.csv)
-- [Ảnh Pattern Benchmark](evidence/week3_pattern_benchmark.png)
-- [Ảnh Natural Benchmark](evidence/week3_natural_benchmark.png)
-- [Ảnh Pattern Comparison](evidence/week3_pattern_comparison.png)
-- [Báo cáo tiến độ Tuần 3](report/weekly_report_03.md)
+- [Pattern Benchmark CSV](results/week3_pattern_benchmark.csv)
+- [Natural Benchmark CSV](results/week3_natural_benchmark.csv)
+- [Pattern Comparison CSV](results/week3_pattern_comparisons.csv)
+- [Pattern Benchmark Evidence](evidence/week3_pattern_benchmark.png)
+- [Natural Benchmark Evidence](evidence/week3_natural_benchmark.png)
+- [Comparison Evidence](evidence/week3_pattern_comparison.png)
+- [Pattern Time Chart](evidence/week3_chart_pattern_time.png)
+- [Pattern Comparison Chart](evidence/week3_chart_pattern_comparisons.png)
+- [Natural Time Chart](evidence/week3_chart_natural_time.png)
 
-**Biểu đồ:**
+### Tuần 4
 
-- [Pattern Length — Execution Time](evidence/week3_chart_pattern_time.png)
-- [Pattern Length — Character Comparisons](evidence/week3_chart_pattern_comparisons.png)
-- [Natural Text — Execution Time](evidence/week3_chart_natural_time.png)
+- [Weekly Report 04](report/weekly_report_04.md)
+- [Final Project Summary](report/week4_final_summary.md)
+- [Defense Notes](report/week4_defense_notes.md)
+- [Final Testing Evidence](evidence/week4_final_tests.png)
 
-### Lịch sử GitHub
+### Pull Requests và lịch sử GitHub
 
 - [PR #1 — Automated Testing](https://github.com/tobyasteria/KMP-String-Matching/pull/1)
 - [PR #2 — Benchmark Validation và Comparison Counting](https://github.com/tobyasteria/KMP-String-Matching/pull/2)
 - [PR #3 — Benchmark và Evidence](https://github.com/tobyasteria/KMP-String-Matching/pull/3)
-- [PR #4 — Week 3 Benchmark](https://github.com/tobyasteria/KMP-String-Matching/pull/4)
-- [Toàn bộ lịch sử commit](https://github.com/tobyasteria/KMP-String-Matching/commits/main)
+- [PR #4 — Extended Benchmarking](https://github.com/tobyasteria/KMP-String-Matching/pull/4)
+- [Commit History](https://github.com/tobyasteria/KMP-String-Matching/commits/main)
+- [AI Usage Log](AI_USAGE_LOG.md)
 
-## 6. Giới hạn và lưu ý
+## 7. Hạn chế
 
-- Các kết quả PASS chỉ xác nhận những trường hợp đã kiểm tra, không chứng minh chương trình đúng với mọi đầu vào.
-- Thời gian thực thi phụ thuộc vào phần cứng, trình biên dịch và điều kiện hệ thống.
-- Các chương trình đếm phép so sánh được triển khai riêng để đo số lần so sánh ký tự; kết quả không nhất thiết bằng số lần đánh giá điều kiện trong mã thuật toán gốc.
-- Bộ dữ liệu Adversarial được thiết kế để làm rõ trường hợp bất lợi của Naive Search, không đại diện cho mọi loại văn bản.
-- Natural Text Tuần 3 sử dụng một tác phẩm văn học và một pattern cụ thể, nên chưa thể khái quát hiệu suất cho mọi dữ liệu tự nhiên.
-- Big-O mô tả giới hạn tăng trưởng tiệm cận, không khẳng định KMP luôn chạy nhanh hơn Naive trong thực tế.
+- Benchmark được thực hiện trên một số nhóm dữ liệu và kích thước cụ thể.
+- Thời gian chạy phụ thuộc cấu hình máy và trình biên dịch.
+- Các bộ đếm phép so sánh là phiên bản có instrumentation riêng.
+- Automated Testing không bảo đảm tính đúng đắn cho mọi đầu vào.
+- Natural Text Benchmark chưa đại diện cho tất cả loại văn bản thực tế.
 
+## 8. Kết luận
+
+Đồ án đã hoàn thành việc triển khai, kiểm thử và đánh giá Naive Search và KMP bằng C++17.
+
+Kết quả cho thấy KMP hạn chế số phép so sánh lặp lại nhờ LPS và đạt độ phức tạp tổng O(n + m), trong khi Naive có độ phức tạp trường hợp xấu nhất O(n × m).
+
+Thực nghiệm cũng chứng minh rằng hiệu suất thực tế phụ thuộc vào dữ liệu: KMP có lợi thế lớn trong trường hợp đối kháng, còn Naive có thể nhanh hơn trên dữ liệu Natural.
+
+Source code, kết quả CSV, tài liệu và minh chứng được lưu trong repository để phục vụ việc kiểm tra và bảo vệ đồ án.
