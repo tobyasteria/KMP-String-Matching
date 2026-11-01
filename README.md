@@ -254,6 +254,7 @@ Trên dữ liệu Natural từ văn bản thực tế, Naive tiếp tục có th
 - [Ảnh Pattern Benchmark](evidence/week3_pattern_benchmark.png)
 - [Ảnh Natural Benchmark](evidence/week3_natural_benchmark.png)
 - [Ảnh Pattern Comparison](evidence/week3_pattern_comparison.png)
+- [Báo cáo tiến độ Tuần 3](report/weekly_report_03.md)
 
 **Biểu đồ:**
 
